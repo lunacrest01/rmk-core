@@ -1,15 +1,15 @@
-# keyboard.toml — simplified + BLE fields compatible with rmk-config that rejected default_tx_power
+# keyboard.toml — try this if cloud rmkit errors on nrf52840_ble
 [keyboard]
 name = "CORE"
 product_name = "CORE"
 vendor_id = 0x6272
 product_id = 0x0002
 manufacturer = "braxon"
-chip = "nrf52840_ble"
+chip = "nrf52840"     # <-- changed from nrf52840_ble to nrf52840
 
 [matrix]
-input_pins  = ["P0_06", "P0_08", "P0_17"]   # rows
-output_pins = ["P0_20", "P0_22", "P1_00"]   # columns
+input_pins  = ["P0_06", "P0_08", "P0_17"]
+output_pins = ["P0_20", "P0_22", "P1_00"]
 
 [layout]
 rows = 3
@@ -32,20 +32,11 @@ keymap = [
 [features]
 vial = true
 storage = true
-ble = true
+ble = true     # still request BLE features at build time
 
 [ble]
 enabled = true
-# If you want battery monitoring, the nRF52840 supports reading VDDH:
 battery_adc_pin = "vddh"
-
-# If your board uses an external divider for the SAADC, set these two:
-# adc_divider_measured = 2000
-# adc_divider_total = 2806
-
-# Optional (deprecated in some versions) charging state/led entries:
-# charge_state = { pin = "PIN_1", low_active = true }
-# charge_led = { pin = "PIN_2", low_active = true }
 
 [storage]
 # storage enabled by default
