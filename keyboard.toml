@@ -1,4 +1,4 @@
-# keyboard.toml — corrected for rmk-config parser (Pro Micro nRF52840 3x3 + encoder + BLE)
+# keyboard.toml — simplified + BLE fields compatible with rmk-config that rejected default_tx_power
 [keyboard]
 name = "CORE"
 product_name = "CORE"
@@ -29,15 +29,6 @@ keymap = [
   ]
 ]
 
-# -------- encoder (correct types) --------
-[[input_device.encoder]]
-pin_a = "P1_04"          # string
-pin_b = "P1_06"          # string
-phase = "default"        # MUST be a string (e.g. "default", "e8h7", or "resolution")
-resolution = 4           # integer (pulses per detent rule depends on your encoder)
-reverse = false          # boolean
-internal_pullup = true   # boolean
-
 [features]
 vial = true
 storage = true
@@ -45,9 +36,16 @@ ble = true
 
 [ble]
 enabled = true
+# If you want battery monitoring, the nRF52840 supports reading VDDH:
 battery_adc_pin = "vddh"
-default_tx_power = 0
-use_2m_phy = true
+
+# If your board uses an external divider for the SAADC, set these two:
+# adc_divider_measured = 2000
+# adc_divider_total = 2806
+
+# Optional (deprecated in some versions) charging state/led entries:
+# charge_state = { pin = "PIN_1", low_active = true }
+# charge_led = { pin = "PIN_2", low_active = true }
 
 [storage]
-# storage is enabled by default
+# storage enabled by default
