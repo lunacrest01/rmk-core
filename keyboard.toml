@@ -1,50 +1,65 @@
-# Documentation: https://haobogu.github.io/rmk/keyboard_configuration.html
+# keyboard.toml — adapted for Pro Micro nRF52840 pins (3x3 matrix + encoder)
 [keyboard]
-name = "RMK Keyboard"
-product_name = "RMK Keyboard"
-vendor_id = 0x4c4b
-product_id = 0x4643
-manufacturer = "haobo"
-chip = "rp2040"
+name = "CORE"
+product_name = "CORE"
+vendor_id = 0x6272
+product_id = 0x0002
+manufacturer = "braxon"
+chip = "nrf52840_ble"   # nRF52840 target with BLE support
 
+# === Matrix ===
 [matrix]
-# Input and output pins are mandatory
-input_pins = ["PIN_6", "PIN_7", "PIN_8", "PIN_9"]
-output_pins = ["PIN_19", "PIN_20", "PIN_21"]
-# WARNING: Currently row2col/col2row is set in RMK's feature gate, configs here do nothing actually
-# row2col = true
+# use the pins you specified (3 input row pins, 3 output col pins)
+# NOTE: RMK accepts pin names like P0_06 or PIN_6 depending on toolchain/version.
+# If your RMK expects different pin naming (PIN_x vs P0_xx) adapt these accordingly.
+input_pins  = ["P0_06", "P0_08", "P0_17"]   # rows
+output_pins = ["P0_20", "P0_22", "P1_00"]   # columns
 
+# === Layout ===
 [layout]
-rows = 4
+rows = 3
 cols = 3
 layers = 2
+
+# Example 2-layer 3x3 keymap (edit keys to suit your needs)
 keymap = [
-    [
-        ["A", "B", "C"],
-        ["Kc1", "Kc2", "Kc3"],
-        ["LCtrl", "MO(1)", "LShift"],
-        ["OSL(1)", "LT(2, Kc9)", "LM(1, LShift | LGui)"]
-    ],
-    [
-        ["_", "TT(1)", "TG(2)"],
-        ["_", "_", "_"],
-        ["_", "_", "_"],
-        ["_", "_", "_"]
-    ],
+  [
+    ["K00", "K01", "K02"],
+    ["K10", "K11", "K12"],
+    ["K20", "K21", "K22"]
+  ],
+  [
+    ["_", "VOLD", "VOLU"],
+    ["_", "MEDIA_PLAY", "_"],
+    ["_", "_", "_"]
+  ]
 ]
 
-[light]
-# All light pins are high-active by default, uncomment if you want it to be low-active
-# capslock.pin = "PB2"
-# capslock.low_active = true
-# scrolllock.pin = "PA3"
-# scrolllock.low_active = true
-# Just ignore if no light pin is used for it
-# numslock.pin = "PA5"
-# numslock.low_active = true
+# === Input devices (encoder) ===
+# Use this section to declare rotary encoder(s).
+# RMK's format may vary slightly by version — this [[input_device.encoder]] style
+# is compatible with the examples in RMK starter templates.
+[[input_device.encoder]]
+name = "encoder0"
+pin_a = "P1_04"     # encoder A (as you specified)
+pin_b = "P1_06"     # encoder B (as you specified)
+# pin_push = "P1_08" # optional — uncomment / change if your encoder has a switch pin
 
+# === Features / optional ===
+[features]
+vial = true        # enable Vial support (live remapping)
+storage = true     # persist Vial remaps to flash
+# wireless / BLE — depending on your RMK toolchain this might be enabled automatically
+# or controlled elsewhere. Keep it enabled here in case your build uses this flag.
+ble = true
 
-
+# === Storage ===
 [storage]
-# Storage feature is enabled by default
-# enabled = false
+# If you need to change storage backend settings, do so here.
+# enabled = true   # storage is enabled by default in RMK; uncomment to explicitly set.
+
+# === Lighting / indicators (example placeholders) ===
+[light]
+# If you have a LED for caps/num/scroll set them here. Otherwise ignore.
+# capslock.pin = "P0_13"
+# capslock.low_active = true
