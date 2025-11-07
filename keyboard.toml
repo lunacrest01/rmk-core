@@ -35,4 +35,4 @@ enabled = true
 battery_adc_pin = "vddh"
 
 [storage]
-# storage enabled by default
+enabled = false
