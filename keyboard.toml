@@ -1,17 +1,14 @@
-# keyboard.toml — adapted for Pro Micro nRF52840 pins (3x3 matrix + encoder)
+# keyboard.toml — corrected for rmk-config parser
 [keyboard]
 name = "CORE"
 product_name = "CORE"
 vendor_id = 0x6272
 product_id = 0x0002
 manufacturer = "braxon"
-chip = "nrf52840_ble"   # nRF52840 target with BLE support
+chip = "nrf52840_ble"
 
 # === Matrix ===
 [matrix]
-# use the pins you specified (3 input row pins, 3 output col pins)
-# NOTE: RMK accepts pin names like P0_06 or PIN_6 depending on toolchain/version.
-# If your RMK expects different pin naming (PIN_x vs P0_xx) adapt these accordingly.
 input_pins  = ["P0_06", "P0_08", "P0_17"]   # rows
 output_pins = ["P0_20", "P0_22", "P1_00"]   # columns
 
@@ -21,7 +18,6 @@ rows = 3
 cols = 3
 layers = 2
 
-# Example 2-layer 3x3 keymap (edit keys to suit your needs)
 keymap = [
   [
     ["K00", "K01", "K02"],
@@ -36,30 +32,31 @@ keymap = [
 ]
 
 # === Input devices (encoder) ===
-# Use this section to declare rotary encoder(s).
-# RMK's format may vary slightly by version — this [[input_device.encoder]] style
-# is compatible with the examples in RMK starter templates.
+# rmk-config expects these keys (no `name` or `pin_push` here)
 [[input_device.encoder]]
-name = "encoder0"
-pin_a = "P1_04"     # encoder A (as you specified)
-pin_b = "P1_06"     # encoder B (as you specified)
-# pin_push = "P1_08" # optional — uncomment / change if your encoder has a switch pin
+pin_a = "P1_04"
+pin_b = "P1_06"
+# Optional supported fields:
+phase = 1             # 0 or 1 (try 1 if rotation seems inverted)
+resolution = 4        # steps per "tick" — tune if you get too coarse/fine
+reverse = false       # set true to invert rotation direction
+internal_pullup = true  # enable internal pullups for encoder pins if needed
 
-# === Features / optional ===
+# IMPORTANT: encoder "push" switches are generally NOT declared here.
+# If your encoder has a push switch, wire that switch to a spare matrix position
+# (one of K00..K22) so it appears as a normal key in the keymap/vial.json.
+# Alternatively, wire it to a dedicated input supported by RMK (check your RMK version docs).
+
 [features]
-vial = true        # enable Vial support (live remapping)
-storage = true     # persist Vial remaps to flash
-# wireless / BLE — depending on your RMK toolchain this might be enabled automatically
-# or controlled elsewhere. Keep it enabled here in case your build uses this flag.
+vial = true
+storage = true
 ble = true
 
-# === Storage ===
-[storage]
-# If you need to change storage backend settings, do so here.
-# enabled = true   # storage is enabled by default in RMK; uncomment to explicitly set.
+[ble]
+enabled = true
+battery_adc_pin = "vddh"
+default_tx_power = 0
+use_2m_phy = true
 
-# === Lighting / indicators (example placeholders) ===
-[light]
-# If you have a LED for caps/num/scroll set them here. Otherwise ignore.
-# capslock.pin = "P0_13"
-# capslock.low_active = true
+[storage]
+# storage enabled by default
