@@ -1,4 +1,4 @@
-# keyboard.toml — corrected for rmk-config parser
+# keyboard.toml — corrected for rmk-config parser (Pro Micro nRF52840 3x3 + encoder + BLE)
 [keyboard]
 name = "CORE"
 product_name = "CORE"
@@ -7,12 +7,10 @@ product_id = 0x0002
 manufacturer = "braxon"
 chip = "nrf52840_ble"
 
-# === Matrix ===
 [matrix]
 input_pins  = ["P0_06", "P0_08", "P0_17"]   # rows
 output_pins = ["P0_20", "P0_22", "P1_00"]   # columns
 
-# === Layout ===
 [layout]
 rows = 3
 cols = 3
@@ -31,21 +29,14 @@ keymap = [
   ]
 ]
 
-# === Input devices (encoder) ===
-# rmk-config expects these keys (no `name` or `pin_push` here)
+# -------- encoder (correct types) --------
 [[input_device.encoder]]
-pin_a = "P1_04"
-pin_b = "P1_06"
-# Optional supported fields:
-phase = 1             # 0 or 1 (try 1 if rotation seems inverted)
-resolution = 4        # steps per "tick" — tune if you get too coarse/fine
-reverse = false       # set true to invert rotation direction
-internal_pullup = true  # enable internal pullups for encoder pins if needed
-
-# IMPORTANT: encoder "push" switches are generally NOT declared here.
-# If your encoder has a push switch, wire that switch to a spare matrix position
-# (one of K00..K22) so it appears as a normal key in the keymap/vial.json.
-# Alternatively, wire it to a dedicated input supported by RMK (check your RMK version docs).
+pin_a = "P1_04"          # string
+pin_b = "P1_06"          # string
+phase = "default"        # MUST be a string (e.g. "default", "e8h7", or "resolution")
+resolution = 4           # integer (pulses per detent rule depends on your encoder)
+reverse = false          # boolean
+internal_pullup = true   # boolean
 
 [features]
 vial = true
@@ -59,4 +50,4 @@ default_tx_power = 0
 use_2m_phy = true
 
 [storage]
-# storage enabled by default
+# storage is enabled by default
