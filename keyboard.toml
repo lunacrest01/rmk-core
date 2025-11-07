@@ -19,9 +19,9 @@ layers = 2
 # Use valid RMK keycodes here (letters, Kc1..Kc0, VOLD, VOLU, No, Transparent, etc.)
 keymap = [
   [
-    ["A", "B", "C"],
-    ["D", "E", "F"],
-    ["G", "H", "I"]
+    ["H", "T", "F"],
+    ["A", "V", "G"],
+    ["M", "N", "O"]
   ]
 ]
 
